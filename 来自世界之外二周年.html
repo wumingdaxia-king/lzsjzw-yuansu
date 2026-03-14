@@ -1,0 +1,1850 @@
+```html
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【二周年模板】来自世界之外 · 模块化主干</title>
+    <style>
+        /* ==================== 基础重置 & 全局样式 ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: #0b0c14;
+            background-image: radial-gradient(circle at 30% 40%, #1e2a3a 0%, #07090f 90%);
+            color: #e3e9f2;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ==================== 头部 ==================== */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #c0b7a6, #b1c9e8, #d7b8a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .world-quote {
+            max-width: 700px;
+            margin: 1rem auto 0;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #b9cdff;
+            background: rgba(10, 20, 35, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            border: 1px solid #466b8c;
+        }
+
+        /* ==================== 导航模块（核心）==================== */
+        .module-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 2.5rem;
+        }
+
+        .nav-btn {
+            background: rgba(35, 50, 70, 0.8);
+            border: 2px solid #4f739b;
+            color: #dde5f0;
+            padding: 0.8rem 2.2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #3f6088;
+            border-color: #b3d0f0;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #4a6e9a;
+            border-color: #e9cba7;
+            color: white;
+        }
+
+        /* ==================== 页面容器 ==================== */
+        .page-container {
+            background: rgba(18, 28, 40, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid #3a526d;
+            border-radius: 40px;
+            padding: 2rem;
+            min-height: 600px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        /* ==================== 通用卡片样式 ==================== */
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #f0e4cf;
+            border-left: 6px solid #b4946a;
+            padding-left: 1.2rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: rgba(10, 18, 28, 0.8);
+            border-radius: 28px;
+            padding: 1.5rem;
+            border: 1px solid #3e6082;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #e6d8b5;
+            margin-bottom: 1rem;
+            border-left: 4px solid #aa8e6a;
+            padding-left: 0.8rem;
+        }
+
+        .badge {
+            background: #1d3148;
+            border-radius: 30px;
+            padding: 0.2rem 1rem;
+            display: inline-block;
+            border: 1px solid #597699;
+            margin: 0.2rem 0;
+        }
+
+        .sigil {
+            background: #1d3148;
+            border-radius: 30px;
+            padding: 0.2rem 1rem;
+            display: inline-block;
+            border: 1px solid #597699;
+        }
+
+        hr {
+            border: 0.5px solid #2f4b6e;
+            margin: 1.5rem 0;
+        }
+
+        /* ==================== 版本详情页专用 ==================== */
+        .version-block {
+            margin-bottom: 2rem;
+            background: rgba(18, 30, 44, 0.6);
+            border: 1px solid #39587a;
+            border-radius: 30px;
+            padding: 1.5rem;
+        }
+
+        .version-badge {
+            font-size: 1.8rem;
+            font-weight: 300;
+            border-bottom: 2px solid #7fa3cc;
+            padding-bottom: 0.3rem;
+            margin-bottom: 1rem;
+            color: #ecf3ff;
+        }
+
+        .version-badge small {
+            font-size: 0.9rem;
+            color: #acc6e5;
+            margin-left: 1rem;
+        }
+
+        /* ==================== 角色展示页专用 ==================== */
+        .characters-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .char-card {
+            background: rgba(10, 22, 36, 0.9);
+            border-radius: 32px;
+            border: 1px solid #4b6d8f;
+            overflow: hidden;
+        }
+
+        .char-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem 2rem;
+            padding: 1.2rem 2rem;
+            background: rgba(20, 38, 58, 0.8);
+            cursor: pointer;
+            flex-wrap: wrap;
+        }
+
+        .char-header:hover {
+            background: #1f3c5a;
+        }
+
+        .char-name {
+            font-size: 1.9rem;
+            color: #f5e6cf;
+        }
+
+        .char-type {
+            background: #172d44;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #6b8bb0;
+        }
+
+        .char-weapon {
+            font-style: italic;
+            color: #c9b48b;
+        }
+
+        .char-detail {
+            display: none;
+            padding: 2rem;
+            background: #0c1a2b;
+            border-top: 1px dashed #3a6085;
+        }
+
+        .char-card.expanded .char-detail {
+            display: block;
+        }
+
+        .talent-box {
+            margin: 1.2rem 0;
+            background: #112233;
+            border-radius: 24px;
+            padding: 1.2rem 1.8rem;
+            border-left: 6px solid #9f8468;
+        }
+
+        .talent-name {
+            font-size: 1.4rem;
+            color: #e6d5b6;
+            margin-bottom: 0.5rem;
+        }
+
+        .talent-desc {
+            color: #bfd3ec;
+        }
+
+        .constellation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .const-item {
+            background: #1f3147;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #4f678b;
+        }
+
+        .const-title {
+            color: #f0dbb0;
+            font-weight: 600;
+            border-bottom: 1px dotted #61799e;
+            padding-bottom: 0.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .collab-note {
+            background: #362b44;
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid #aa99cc;
+        }
+
+        /* ==================== 队伍配置页专用 ==================== */
+        .team-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .team-slot {
+            background: #10273e;
+            border-radius: 30px;
+            padding: 1.5rem 1rem;
+            flex: 1 1 180px;
+            text-align: center;
+            border: 2px dashed #5f7fa3;
+            transition: all 0.2s;
+        }
+
+        .team-slot.occupied {
+            border: 2px solid #e9cba7;
+            background: #1a3a57;
+        }
+
+        .slot-number {
+            background: #2e4b69;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .slot-char-name {
+            font-size: 1.3rem;
+            min-height: 2.5rem;
+            color: #f0dbb0;
+        }
+
+        .slot-char-camp {
+            font-size: 0.9rem;
+            background: #1f374b;
+            border-radius: 20px;
+            padding: 0.2rem;
+            margin: 0.5rem 0;
+        }
+
+        .slot-action-btn {
+            background: #1f3b54;
+            border: 1px solid #507eaf;
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        .slot-action-btn:hover {
+            background: #2d4f70;
+        }
+
+        .roster-section {
+            background: #0e1f2c;
+            border-radius: 30px;
+            padding: 1.8rem;
+        }
+
+        .roster-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .roster-tag {
+            background: #1d334a;
+            border: 1px solid #5f7fa3;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .roster-tag:hover:not(.disabled) {
+            background: #2e4f73;
+            border-color: #e9cba7;
+        }
+
+        .roster-tag.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ==================== 抽卡模拟页专用 ==================== */
+        .gacha-container {
+            background: rgba(12, 24, 40, 0.9);
+            border: 2px solid #4f739b;
+            border-radius: 50px;
+            padding: 2rem;
+        }
+
+        .pool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .version-pool {
+            background: #10273e;
+            border-radius: 30px;
+            padding: 1.2rem;
+            border: 1px solid #3a6085;
+        }
+
+        .version-pool h4 {
+            color: #eedbba;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px dashed #5f7fa3;
+            padding-bottom: 0.3rem;
+        }
+
+        .version-pool label {
+            display: block;
+            margin: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .version-pool input[type="radio"] {
+            accent-color: #b89e77;
+            margin-right: 0.5rem;
+        }
+
+        .currency-panel {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            background: #102536;
+            border-radius: 40px;
+            padding: 1.2rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .world-bubble {
+            background: #1b3552;
+            border-radius: 60px;
+            padding: 0.4rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .world-bubble input {
+            background: #0a1d33;
+            border: 2px solid #5679a3;
+            border-radius: 40px;
+            padding: 0.4rem 1rem;
+            width: 140px;
+            color: #f0e6d2;
+        }
+
+        .gacha-btn {
+            background: linear-gradient(145deg, #2f4d73, #1b314b);
+            border: 2px solid #779bc7;
+            color: #f0ebdd;
+            font-size: 1.2rem;
+            padding: 0.5rem 1.8rem;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+        .gacha-btn:hover {
+            background: #3f6792;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+            justify-items: center;
+        }
+
+        .card-item {
+            width: 100px;
+            height: 140px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 14px;
+        }
+
+        .card-item.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #bda47c;
+        }
+
+        .card-front {
+            background: #1f3f60;
+            color: #eedbba;
+            font-size: 2rem;
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            background: #2f4b6e;
+            color: #f5e6cf;
+            transform: rotateY(180deg);
+            flex-direction: column;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .history-panel {
+            background: #0a1a2c;
+            border-radius: 30px;
+            padding: 1rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- ==================== 头部 ==================== -->
+    <div class="header">
+        <h1>✦ 二周年 · 全新篇章 ✦</h1>
+        <div class="world-quote">
+            观测者，欢迎回到世界之外 · 二周年庆典
+        </div>
+    </div>
+
+    <!-- ==================== 导航 ==================== -->
+    <div class="module-nav">
+        <div class="nav-btn active" data-page="version">版本详情</div>
+        <div class="nav-btn" data-page="characters">角色展示</div>
+        <div class="nav-btn" data-page="team">队伍配置</div>
+        <div class="nav-btn" data-page="gacha">抽卡模拟</div>
+
+    </div>
+
+    <!-- ==================== 页面容器 ==================== -->
+    <div class="page-container">
+        <!-- ========= 版本详情页 ========= -->
+        <div id="version" class="page active-page">
+            <div class="section-title">📖 二周年 版本详情</div>
+            <div class="version-block">
+                <div class="version-badge">2.X版本 · 全新启程</div>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-title">第一部</div>
+                        <p>二周年剧情开启，截至2.6版本已更新至第一部第20章</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">章节之外</div>
+                        <p>截至2.6版本已更新至第F章</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- ========= 角色展示页 ========= -->
+<div id="characters" class="page">
+    <div class="section-title">👤 二周年全版本角色一览</div>
+    
+    <!-- 2.0 版本角色 -->
+    <div class="version-block">
+        <div class="version-badge">2.0 黯星坠入深渊的那天</div>
+        <div class="characters-grid">
+            <!-- 神隐无踪-枪 · 真理之冠冕 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">神隐无踪-枪</span>
+                    <span class="char-type">真理之冠冕</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">⚔️ 天赋一 · 瞄准，狩猎目标 CD:8s</div>
+                        <div class="talent-desc">进入瞄准状态，对单体敌人发射一枚“深邃无渊弹”，并附着至多持续3s的雷电元素。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🌌 天赋二 · 绝处逢生 (LV.2解锁)</div>
+                        <div class="talent-desc">瞄准状态每持续1s提升自己1%暴击率（暴击率溢出时改为+1暴击伤害）。自身每受到一次攻击减少自身10%暴击率并提高自身5暴击伤害。</div>
+                    </div>
+                    <div><span class="sigil">天命</span></div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 天赋二改为“瞄准状态每持续1s提升自己5%暴击率。自身每受到一次攻击减少自身5%暴击率并提高自身10暴击伤害。”</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 瞄准状态时不受伤害</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 海渊凝视-莫奈 · 意识之心灵 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">海渊凝视-莫奈</span>
+                    <span class="char-type">意识之心灵</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🎭 天赋一 · 复现神迹 CD:12s</div>
+                        <div class="talent-desc">创造持续8s的“幻海领域”，并随机生成一处较小范围的“古海瘴气”，我方角色处于“古海瘴气”中时获得50%的抗性且受敌人攻击的概率会增加。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🔍 天赋二 · 延续塞壬的歌谣 (LV.2解锁)</div>
+                        <div class="talent-desc">“幻海领域”中的敌人将持续处于“潮湿”的水元素附着状态，受水元素相关反应时将额外承受5伤害。此外，当“幻海领域”中的敌人处于水+雷电的麻痹反应时，将提升“幻海领域”4s持续时间，每12s至多触发一次。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> “幻海领域”每持续4s，都将提升全队10%暴击率，至多通过这种方式提升30%</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 处于“幻海领域”中时，莫奈每次普通攻击都将消耗1s领域持续时间，造成队伍中角色数量*莫奈自身最大生命值的水元素攻击</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.1 版本角色 -->
+    <div class="version-block">
+        <div class="version-badge">2.1 造化苦弱，逢世生念</div>
+        <div class="characters-grid">
+            <!-- 得道功德佛-空禅 · 无 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">得道功德佛-空禅</span>
+                    <span class="char-type">无</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🌠 天赋一 · 真传奥义 CD:2s</div>
+                        <div class="talent-desc">根据是否拥有“静心”触发不同效果。未持有“静心”，施展真·气功：向后跳跃一段距离，也可根据移动方向进行跳跃。（可通过这种方式跳出场地）持有“静心”，施展真·空气功：消耗10能量释放10*空禅自身准心的小范围伤害，并重置天赋一CD。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">✨ 天赋二 · 耐性 (LV.2解锁)</div>
+                        <div class="talent-desc">持续6s秒未移动将获得持续3s的“静心”。此外，自身每消耗10能量都将延长1s的“静心”持续时间，每0.9s至多触发一次。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 跳跃过程中点击普攻将直接对最近的敌人施展“真·空气功”</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 当自身能量低于10时，每秒恢复20能量，持续3s</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 最初的【人】 · 无（支线剧情自定义） -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">最初的【人】</span>
+                    <span class="char-type">无</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🌱 天赋一 · 名为【热血】/名为【梦想】/名为【希望】 CD:6s</div>
+                        <div class="talent-desc">无法装备武器。根据施展的技能切换不同的形态。【热血】：普攻使用拳击攻击。基于自身120%攻击力进行至多四段的火元素拳击，第三段时将消耗自身1生命造成180%攻击力伤害，第四段时将恢复自身1生命。【梦想】：普攻使用法杖攻击。造成自身50%最大生命值的水元素法术伤害，击杀敌人时生成一颗“纯水宝滴”，自身和队友拾起后将恢复20%最大生命值。【希望】：普攻汇聚风元素为风鹰进行攻击（自动瞄准）。造成自身当前攻击力+25%当前生命值+当前准心的风元素法术伤害。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">⚖️ 天赋二 · 我本无名，谁人赐以意义 (LV.2解锁)</div>
+                        <div class="talent-desc">每通关一次首领关卡，本局自身攻击力+1、最大生命值+1、准心上限+0.5。当“观测者”处于队伍中时，加成效果提升100%。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 每次切换形态都将放飞一盏“祈福灯”，提高我方50%暴击率，持续6s</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 击杀敌人进入“战狂模式”，每次攻击固定为30，持续2s，每10s至多触发一次</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.2 版本角色 -->
+    <div class="version-block">
+        <div class="version-badge">2.2 盛世天威祝业兴</div>
+        <div class="characters-grid">
+            <!-- 锻铸神匠-文昊 · 创生之左手 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">锻铸神匠-文昊</span>
+                    <span class="char-type">创生之左手</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🌿 天赋一 · 精巧锻造 CD:12s5s</div>
+                        <div class="talent-desc">使用后有50%的概率生效。生效后锻造一件与队伍中队友相配对的五星“伪专属武器”，每个队友只可以额外装备一件“伪专属武器”。“伪专属武器”：拥有专属武器50%的数值，每种专属武器的“伪专属武器”至多存在一个。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🔄 天赋二 · 专注于一心 (LV.2解锁)</div>
+                        <div class="talent-desc">停止行动时天赋CD冷却速度提高100%。场上每存在一种“伪专属武器”，文昊的暴击率提高20%，每溢出10%会转化为5暴击伤害。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 天赋一可施展时开始计时，每10s，提升10%暴击率，持续至下次暴击或施展天赋一</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 暴击时，获得“燃气”，每层提高全队0.5暴击伤害，至多提升10次。“伪专属武器”暴击时，增加0.1次提升暴击伤害的次数。</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 极影剑客-无锋 · 毁灭之右手 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">极影剑客-无锋</span>
+                    <span class="char-type">毁灭之右手</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🐉 天赋一 · 五角星斩击 CD:5s</div>
+                        <div class="talent-desc">以五角星的轨迹施展五段物理剑击伤害，每段造成自身100%攻击力的基础伤害，每段斩击都将提升下一段20%伤害，至多通过这种方式提升100%斩击伤害。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">⚡ 天赋二 · 熟能生巧 (LV.2解锁)</div>
+                        <div class="talent-desc">天赋一每斩击一次敌人都将获得一层“开锋芒”。自身持有“开锋芒”时，普攻伤害+100%，且在普攻造成伤害后消耗所有“开锋芒”，每消耗一层减少1s天赋一冷却时间。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 进入战斗状态时，获得10暴击伤害和50%暴击率</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 进入战斗状态后20s内自身普攻必定暴击</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.3 版本角色 -->
+    <div class="version-block">
+        <div class="version-badge">2.3 霜冰已然消逝，蛮荒终将散尽</div>
+        <div class="characters-grid">
+            <!-- 急冻寒庭-韩城书 · 真理之冠冕 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">急冻寒庭-韩城书</span>
+                    <span class="char-type">真理之冠冕</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🏳️ 天赋一 · 结冰术法 CD:5s</div>
+                        <div class="talent-desc">施展法术对1/2/3及以上敌人造成10/8/5冰元素伤害。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🛡️ 天赋二 · 冰世纪的回音 (LV.2解锁)</div>
+                        <div class="talent-desc">当自身生命低于50%时累计造成三次冰元素伤害后刷新天赋一冷却，强化天赋一为“凝冰回响”。“凝冰回响”：施展法术对1/2/3及以上敌人造成25/12/830/20/10冰元素伤害，每击中一个敌人回复自身20%最大生命值，若此时已达生命上限，则改为冻结敌人2秒。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 冰元素伤害的暴击率提升50%，若暴击率溢出则额外提升20暴击伤害</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 冰元素在怪物身上的持续时间延长至10秒</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 蛮族后裔-德凯 · 见证之瞳眸 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">蛮族后裔-德凯</span>
+                    <span class="char-type">见证之瞳眸</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🐉 天赋一 · 血脉觉醒 CD:8s</div>
+                        <div class="talent-desc">进入“蛮魔”强化状态，获得20%全元素抗性，每10%全元素抗性提升自己2攻击力。至多通过这种方式提升20攻击力。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">⚡ 天赋二 · 邪灵化 (LV.2解锁)</div>
+                        <div class="talent-desc">施展天赋一，消耗生命值大于1的队友（包括自己）1生命，每吸收一个提高自身20%全元素抗性，持续8秒。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 每层10%全元素抗性额外提升4攻击力，提升无上限。</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 每吸收一个提升自己30%全元素抗性，包括溢出值。天赋二效果改为“施展天赋一，每存在一位生命值大于1的队友（包括自己和召唤物），提高自身20%全元素抗性，至多提升100%。持续8秒。”</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.4 版本角色 -->
+    <div class="version-block">
+        <div class="version-badge">2.4 天空陨落的水晶之杯</div>
+        <div class="characters-grid">
+            <!-- 不休歌舞剧-莫迪斯 · 意识之心灵 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">不休歌舞剧-莫迪斯</span>
+                    <span class="char-type">意识之心灵</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🕳️ 天赋一 · 伞下曲 CD:5s</div>
+                        <div class="talent-desc">奏响经典的歌舞音乐（改变战斗音乐），提高全队（除自己以外）2攻击力，1生命上限，2护盾上限，1准心，10%全元素伤害加成，持续6s。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🌀 天赋二 · 以身入戏 (LV.2解锁)</div>
+                        <div class="talent-desc">尽心演绎每一类角色，对敌人造成伤害时切换为克制该敌的类型，持续5s。根据自身类型替换天赋一对应增益：毁灭（4攻击力）、创生（2生命上限）、意识（4护盾上限）、真理（2准心）、其他（50%全元素伤害加成）</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 普通攻击自带元素，火（毁灭）、水（创生）、风（意识）、雷电（真理）、物理（其他）</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 队伍中每存在一位（包含随从），获得10%全元素伤害加成</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 命格权衡-天狼星 · 毁灭之右手 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">命格权衡-天狼星</span>
+                    <span class="char-type">毁灭之右手</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🌊 天赋一 · 彭殇之差 CD:6s</div>
+                        <div class="talent-desc">将距离自己最近的一位敌人标记“殇灭”，攻击标有“殇灭”的敌人时，视作造成雷电伤害。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🧠 天赋二 · 杀不死的他 (LV.2解锁)</div>
+                        <div class="talent-desc">普攻附带元素伤害时，有50%的固定概率秒杀非BOSS敌人，5%的概率秒杀BOSS敌人。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 获得雷电伤害加成后6s内，普攻获得雷电伤害附魔</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 天赋二的5%提升至10%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.5 版本角色 -->
+    <div class="version-block">
+        <div class="version-badge">2.5 以和解的名义</div>
+        <div class="characters-grid">
+            <!-- 缄声默语-无音 · 创生之左手 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">缄声默语-无音</span>
+                    <span class="char-type">创生之左手</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🦇 天赋一 · 无声的沉默 CD:6s</div>
+                        <div class="talent-desc">召唤吸收一切声音的“缄默灵”，在自身受到攻击时对对应敌方单位造成100%攻击力的暗属性追加攻击伤害。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🌕 天赋二 · 在沉默中消亡 (LV.2解锁)</div>
+                        <div class="talent-desc">“缄默灵”在场时将屏蔽以下声音获得一层“沉默”（每层持续5s，提供全队4全元素暴击伤害和0.5格调伤害加成），每层独立计算：普通战斗音乐、BOSS战斗音乐、角色技能音乐、武器音效。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 每层“沉默”为全队提供6全元素暴击伤害和10%全元素暴击率加成</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 每层“沉默”为全队提供8全元素暴击伤害和20%全元素暴击率加成</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 天籁共吟-正音 · 意识之心灵 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">天籁共吟-正音</span>
+                    <span class="char-type">意识之心灵</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🎺 天赋一 · 奏起，天上声 CD:9s</div>
+                        <div class="talent-desc">召唤1~2个“谐律和解仙灵”，每位继承自身25%基础面板数值，在自身造成伤害后进行协同攻击，视作造成光属性伤害。每4s至多触发一次。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">📯 天赋二 · 和解的神迹 (LV.2解锁)</div>
+                        <div class="talent-desc">场上存在4位“谐律和解仙灵”时，融合为“和解之神灵”，拥有自身100%当前面板数值，在自身造成伤害后造成光属性协同攻击伤害，每3s至多触发一次。每场战斗至多存在一位“和解之神灵”。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 天赋二改为“每1s至多触发一次”</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 天赋二改为“每场战斗至多存在三位‘和解之神灵’”</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.6 周年庆版本 -->
+    <div class="version-block">
+        <div class="version-badge">2.6 周年庆版本 钟声响起时，末日尽，蓦然回首处</div>
+        <div class="characters-grid">
+            <!-- 真魂圣主-龍 · 见证之瞳眸（二周年限定） -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">真魂圣主-龍</span>
+                    <span class="char-type">见证之瞳眸</span>
+                    <span class="char-weapon">二周年限定</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">👑 天赋一 · 天龙决 CD:3s</div>
+                        <div class="talent-desc">对范围内敌人造成自身100%攻击力伤害，拥有龙魂时该伤害额外获得50%暴击率、+5暴击伤害和100%基础攻击力加成。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">⚔️ 天赋二 · 真龙天子 (LV.2解锁)</div>
+                        <div class="talent-desc">普攻第四段（最后一段）击中敌人后化身“真·龙”，获得龙魂，龙魂可提供自身3攻击力加成，持续4s。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+2</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 攻击力+6</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+2</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 施展天赋一后3s内，每25%暴击率额外提供3攻击力加成，每5暴击伤害额外获得6攻击力加成</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 预言终降临-柯斯 · 真理之冠冕（二周年限定） -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">预言终降临-柯斯</span>
+                    <span class="char-type">真理之冠冕</span>
+                    <span class="char-weapon">二周年限定</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🎭 天赋一 · 当...陨落 CD:4s</div>
+                        <div class="talent-desc">启动天体运行机，根据充能状态产生不同效果。【探天机，破无证（“命”未满5格且“运”未满3格）】将“命”提至8层，将“运”提至4层。【勘定天机（“命”积攒4格）】消耗当前所有“命”获得2s无敌状态，每消耗两格超过4的部分，额外延长1s。每次至多延长至4s。【无证之论（“运”积攒2格）】消耗当前所有“运”为全队提供1层护盾上限，每消耗一格超过2的部分，额外为全队提供1层护盾上限，持续4s。每次至多提供3层护盾上限。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🔍 天赋二 · 我即真理 (LV.2解锁)</div>
+                        <div class="talent-desc">随行有“天体运行机”，每1s为“勘定天机”提供1格“命”，每次使用天赋一为“无证之论”提供2格“运”。队伍中每存在一位“毁灭党”成员，为“勘定天机”提供25%效率。队伍中每存在一位非真理之冠冕类型角色，为“无证之论”提供50%效率。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+2</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 天赋一可积攒2次可使用次数</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+2</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 每消耗1层“命”（“运”）获得20%暴击率（+5暴击伤害），持续4s</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 重逢再回首-杰克 · 意识之心灵（二周年限定） -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">重逢再回首-杰克</span>
+                    <span class="char-type">意识之心灵</span>
+                    <span class="char-weapon">二周年限定</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">🌊 天赋一 · 记忆，重叠，回眸 CD:10s</div>
+                        <div class="talent-desc">展开“多层重叠境界”，持续10s，期间队友每次使用天赋一，将延长1s持续时间。“多层重叠境界”：持续期间，敌人攻击频率提高但伤害减半，所受非暴击伤害提高至400%。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🧠 天赋二 · 斯人已去 (LV.2解锁)</div>
+                        <div class="talent-desc">施展天赋一的6s内，全队无法暴击，但暴击伤害的50%转化为攻击力。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> 天赋二触发条件改为“‘多重重叠境界’持续期间”</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 天赋二更改为“全队无法获得额外的暴击率加成但暴击伤害的100%转化为攻击力”</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 本质观测者 · 意识之心灵 -->
+            <div class="char-card">
+                <div class="char-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <span class="char-name">本质观测者</span>
+                    <span class="char-type">意识之心灵</span>
+                </div>
+                <div class="char-detail">
+                    <div class="talent-box">
+                        <div class="talent-name">⚔️ 天赋一 · 观测-安眠曲 CD:6s</div>
+                        <div class="talent-desc">开启“愿你安眠”领域，持续6秒。“愿你安眠”：敌人弹幕的速度降低50%，我方近战武器可以清除攻击范围内的弹幕。</div>
+                    </div>
+                    <div class="talent-box">
+                        <div class="talent-name">🌌 天赋二 · 观测-心的同频 (LV.2解锁)</div>
+                        <div class="talent-desc">队伍中每存在一位“羁绊（自身和3.X版本角色）”类型角色，自身攻击力+2.5、暴击伤害+1。至多通过这种方式获得5攻击力和2暴击伤害加成。</div>
+                    </div>
+                    <div class="constellation-grid">
+                        <div class="const-item"><span class="const-title">1阶</span> 生命+1</div>
+                        <div class="const-item"><span class="const-title">2阶</span> “愿你安眠”领域内的敌人获得“迷惘”：攻击可对自己人造成伤害</div>
+                        <div class="const-item"><span class="const-title">3阶</span> 护盾+1</div>
+                        <div class="const-item"><span class="const-title">4阶</span> 天赋二改成“队伍中每存在一位不同类型角色，我方全体自身攻击力+2.5、暴击伤害+1。至多通过这种方式获得10攻击力和4暴击伤害加成”</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <!-- ========= 队伍配置页 ========= -->
+        <div id="team" class="page">
+            <div class="section-title">👥 自定义队伍 · 四人小队</div>
+            
+            <!-- 四个队伍槽位 -->
+            <div class="team-slots" id="teamSlots">
+                <div class="team-slot" data-index="0">
+                    <div class="slot-number">1</div>
+                    <div class="slot-char-name">— 空缺 —</div>
+                    <div class="slot-char-camp"></div>
+                    <button class="slot-action-btn remove-btn" style="display:none">移除</button>
+                </div>
+                <div class="team-slot" data-index="1">
+                    <div class="slot-number">2</div>
+                    <div class="slot-char-name">— 空缺 —</div>
+                    <div class="slot-char-camp"></div>
+                    <button class="slot-action-btn remove-btn" style="display:none">移除</button>
+                </div>
+                <div class="team-slot" data-index="2">
+                    <div class="slot-number">3</div>
+                    <div class="slot-char-name">— 空缺 —</div>
+                    <div class="slot-char-camp"></div>
+                    <button class="slot-action-btn remove-btn" style="display:none">移除</button>
+                </div>
+                <div class="team-slot" data-index="3">
+                    <div class="slot-number">4</div>
+                    <div class="slot-char-name">— 空缺 —</div>
+                    <div class="slot-char-camp"></div>
+                    <button class="slot-action-btn remove-btn" style="display:none">移除</button>
+                </div>
+            </div>
+
+            <!-- 角色列表容器 -->
+            <div class="roster-section">
+                <h3 style="color:#e6d8b5; margin-bottom:1rem;">📋 所有可配置角色</h3>
+                <div class="roster-grid" id="rosterList">
+                    <!-- 1.0版本 -->
+                    <span class="roster-tag" data-name="千面神探-福斯" data-camp="真理之冠冕">千面神探-福斯 · 真理之冠冕</span>
+                    <span class="roster-tag" data-name="「莫里亚蒂」华尔森" data-camp="毁灭之右手">「莫里亚蒂」华尔森 · 毁灭之右手</span>
+                    
+                    <!-- 1.1版本 -->
+                    <span class="roster-tag" data-name="星空夜语-星卜" data-camp="创生之左手">星空夜语-星卜 · 创生之左手</span>
+                    <span class="roster-tag" data-name="生命之眷属-艾蒙芽扎" data-camp="意识之心灵">生命之眷属-艾蒙芽扎 · 意识之心灵</span>
+                    
+                    <!-- 1.2版本 -->
+                    <span class="roster-tag" data-name="白马&王子" data-camp="创生之左手">童话幻梦-白马&王子 · 创生之左手</span>
+                    <span class="roster-tag" data-name="黑焰龙骑士-姚子麟" data-camp="毁灭之右手">黑焰龙骑士-姚子麟 · 毁灭之右手</span>
+                    
+                    <!-- 1.3版本 -->
+                    <span class="roster-tag" data-name="摆渡人-王池" data-camp="意识之心灵">摆渡人-王池 · 意识之心灵</span>
+                    <span class="roster-tag" data-name="联信使-夜枭" data-camp="见证之瞳眸">联信使-夜枭 · 见证之瞳眸</span>
+                    
+                    <!-- 1.4版本 -->
+                    <span class="roster-tag" data-name="东皇初" data-camp="真理之冠冕">悖论理构想-东皇初 · 真理之冠冕</span>
+                    <span class="roster-tag" data-name="海马回" data-camp="意识之心灵">忆域交响曲-海马回 · 意识之心灵</span>
+                    
+                    <!-- 1.5版本 -->
+                    <span class="roster-tag" data-name="尼古拉斯·琳德" data-camp="毁灭之右手">血夜贵族-尼古拉斯·琳德 · 毁灭之右手</span>
+                    <span class="roster-tag" data-name="李征天" data-camp="见证之瞳眸">赤色号角-李征天 · 见证之瞳眸</span>
+                    
+                    <!-- 1.6版本 -->
+                    <span class="roster-tag" data-name="亚瑟王" data-camp="毁灭之右手">亚瑟王（一周年限定） · 毁灭之右手</span>
+                    <span class="roster-tag" data-name="梅林" data-camp="创生之左手">梅林（一周年限定） · 创生之左手</span>
+                    
+                    <!-- 2.0版本 -->
+                    <span class="roster-tag" data-name="神隐无踪-枪" data-camp="真理之冠冕">神隐无踪-枪 · 真理之冠冕</span>
+                    <span class="roster-tag" data-name="海渊凝视-莫奈" data-camp="意识之心灵">海渊凝视-莫奈 · 意识之心灵</span>
+                    
+                    <!-- 2.1版本 -->
+                    <span class="roster-tag" data-name="得道功德佛-空禅" data-camp="无">得道功德佛-空禅 · 无</span>
+                    <span class="roster-tag" data-name="最初的【人】" data-camp="无">最初的【人】 · 无</span>
+                    
+                    <!-- 2.2版本 -->
+                    <span class="roster-tag" data-name="锻铸神匠-文昊" data-camp="创生之左手">锻铸神匠-文昊 · 创生之左手</span>
+                    <span class="roster-tag" data-name="极影剑客-无锋" data-camp="毁灭之右手">极影剑客-无锋 · 毁灭之右手</span>
+                    
+                    <!-- 2.3版本 -->
+                    <span class="roster-tag" data-name="急冻寒庭-韩城书" data-camp="真理之冠冕">急冻寒庭-韩城书 · 真理之冠冕</span>
+                    <span class="roster-tag" data-name="蛮族后裔-德凯" data-camp="见证之瞳眸">蛮族后裔-德凯 · 见证之瞳眸</span>
+                    
+                    <!-- 2.4版本 -->
+                    <span class="roster-tag" data-name="不休歌舞剧-莫迪斯" data-camp="意识之心灵">不休歌舞剧-莫迪斯 · 意识之心灵</span>
+                    <span class="roster-tag" data-name="命格权衡-天狼星" data-camp="毁灭之右手">命格权衡-天狼星 · 毁灭之右手</span>
+                    
+                    <!-- 2.5版本 -->
+                    <span class="roster-tag" data-name="缄声默语-无音" data-camp="创生之左手">缄声默语-无音 · 创生之左手</span>
+                    <span class="roster-tag" data-name="天籁共吟-正音" data-camp="意识之心灵">天籁共吟-正音 · 意识之心灵</span>
+                    
+                    <!-- 2.6版本（二周年限定） -->
+                    <span class="roster-tag" data-name="真魂圣主-龍" data-camp="见证之瞳眸">真魂圣主-龍（二周年限定） · 见证之瞳眸</span>
+                    <span class="roster-tag" data-name="预言终降临-柯斯" data-camp="真理之冠冕">预言终降临-柯斯（二周年限定） · 真理之冠冕</span>
+                    <span class="roster-tag" data-name="重逢再回首-杰克" data-camp="意识之心灵">重逢再回首-杰克（二周年限定） · 意识之心灵</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========= 抽卡模拟页 ========= -->
+        <div id="gacha" class="page">
+            <div class="gacha-container" id="gachaSim">
+                <div class="gacha-title" style="font-size:2rem; color:#f0e4cf; margin-bottom:1rem;">
+                    🌌 2.X版本· 卡池
+                    <small style="font-size:1rem; color:#acc6e5; margin-left:1rem;">120世界泡 / 抽 · 必得所选UP</small>
+                </div>
+
+                <!-- UP角色选择区 (按版本分组) -->
+                <div class="pool-grid" id="upSelector">
+                    <!-- 2.0 版本 -->
+                    <div class="version-pool">
+                        <h4>2.0 黯星坠入深渊的那天</h4>
+                        <label><input type="radio" name="upChar" value="神隐无踪-枪"> 神隐无踪-枪 · 真理之冠冕</label>
+                        <label><input type="radio" name="upChar" value="海渊凝视-莫奈"> 海渊凝视-莫奈 · 意识之心灵</label>
+                    </div>
+                    
+                    <!-- 2.1 版本 -->
+                    <div class="version-pool">
+                        <h4>2.1 造化苦弱，逢世生念</h4>
+                        <label><input type="radio" name="upChar" value="得道功德佛-空禅"> 得道功德佛-空禅 · 无</label>
+                        <label><input type="radio" name="upChar" value="最初的【人】"> 最初的【人】 · 无</label>
+                    </div>
+                    
+                    <!-- 2.2 版本 -->
+                    <div class="version-pool">
+                        <h4>2.2 盛世天威祝业兴</h4>
+                        <label><input type="radio" name="upChar" value="锻铸神匠-文昊"> 锻铸神匠-文昊 · 创生之左手</label>
+                        <label><input type="radio" name="upChar" value="极影剑客-无锋"> 极影剑客-无锋 · 毁灭之右手</label>
+                    </div>
+                    
+                    <!-- 2.3 版本 -->
+                    <div class="version-pool">
+                        <h4>2.3 霜冰已然消逝，蛮荒终将散尽</h4>
+                        <label><input type="radio" name="upChar" value="急冻寒庭-韩城书"> 急冻寒庭-韩城书 · 真理之冠冕</label>
+                        <label><input type="radio" name="upChar" value="蛮族后裔-德凯"> 蛮族后裔-德凯 · 见证之瞳眸</label>
+                    </div>
+                    
+                    <!-- 2.4 版本 -->
+                    <div class="version-pool">
+                        <h4>2.4 天空陨落的水晶之杯</h4>
+                        <label><input type="radio" name="upChar" value="不休歌舞剧-莫迪斯"> 不休歌舞剧-莫迪斯 · 意识之心灵</label>
+                        <label><input type="radio" name="upChar" value="命格权衡-天狼星"> 命格权衡-天狼星 · 毁灭之右手</label>
+                    </div>
+                    
+                    <!-- 2.5 版本 -->
+                    <div class="version-pool">
+                        <h4>2.5 以和解的名义</h4>
+                        <label><input type="radio" name="upChar" value="缄声默语-无音"> 缄声默语-无音 · 创生之左手</label>
+                        <label><input type="radio" name="upChar" value="天籁共吟-正音"> 天籁共吟-正音 · 意识之心灵</label>
+                    </div>
+                    
+                    <!-- 2.6 二周年限定 -->
+                    <div class="version-pool">
+                        <h4>2.6 钟声响起时，末日尽，蓦然回首处</h4>
+                        <label><input type="radio" name="upChar" value="真魂圣主-龍"> 真魂圣主-龍（二周年限定） · 见证之瞳眸</label>
+                        <label><input type="radio" name="upChar" value="预言终降临-柯斯"> 预言终降临-柯斯（二周年限定） · 真理之冠冕</label>
+                        <label><input type="radio" name="upChar" value="重逢再回首-杰克"> 重逢再回首-杰克（二周年限定） · 意识之心灵</label>
+                    </div>
+                </div>
+
+                <!-- 世界泡 & 按钮区 -->
+                <div class="currency-panel">
+                    <div class="world-bubble">
+                        <small>世界泡</small>
+                        <input type="number" id="worldInput" value="12000" min="0" step="120">
+                        <span id="worldDisplay">12000</span>
+                    </div>
+                    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                        <button class="gacha-btn" id="singlePull">单抽 · 120</button>
+                        <button class="gacha-btn" id="tenPull">十连 · 1200</button>
+                        <button class="gacha-btn" id="flipAllBtn">一键翻开所有</button>
+                        <button class="gacha-btn" id="resetGacha">重置</button>
+                    </div>
+                </div>
+
+                <!-- 保底/抽数统计 -->
+                <div style="background:#102536; border-radius:30px; padding:1rem 2rem; margin:1.5rem 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+                    <div style="font-size:1.2rem; color:#d3e2fc;">
+                        📊 <strong id="pullCount">0</strong> 抽 · 距离保底 <strong id="pityCount">0</strong> / 80
+                        ⭐ 已获UP: <strong id="upCount">0</strong>
+                    </div>
+                </div>
+
+                <!-- 卡牌展示区 -->
+                <div id="cardsContainer" class="cards-grid"></div>
+
+                <!-- 抽卡历史记录 -->
+                <div class="history-panel" id="historyPanel">
+                    <div class="history-entry" style="color:#6f8bb0;">✨ 点击单抽或十连获得新卡牌，点击卡牌可单独翻开 ✨</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========= 版本详情页 ========= -->
+        <div id="version" class="page active-page">
+            <div class="section-title">📖 二周年 版本详情</div>
+            
+            <!-- 2.0 版本 -->
+            <div class="card version-block" id="v2.0">
+                <div class="version-badge">2.0 版本 · 致莫里恺安·奈亚 <small>主推：元素反应</small></div>
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第拾贰章 · 致莫里恺安·奈亚 <span style="font-size:0.9rem;">(上/中/下 · 各5小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>上篇BOSS：</strong>海妖塞壬</li>
+                            <li><strong>中篇BOSS：</strong>海祭圣女-奈亚（莫里恺安的后代）</li>
+                            <li><strong>下篇BOSS：</strong>奇怪的讨债剑士</li>
+                            <li>💠 特殊掉落：渊海奇珠（LV2级突破素材）</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池60抽（每小节4抽），专属武器池30抽（每篇结尾BOSS关有低/中/难，每篇难度通过中及以上难度10抽），版本签到1200世界泡（=10观测回想/拟定器钥）</p>
+                            <p>🎨 新机制“绘卷忆流年”</p>
+                            <p>📅 版本连续签到14天获得2.0版本S级纪念卡“满月神探？”（福斯系列角色可携带：提高佩戴者BUFF持续时间1s）<br>
+                            <small>※ 可N元补签第N次</small></p>
+                            <p>📅 累计签到30天获得2.0版本S级纪念卡“伏案静憩！”（华尔森系列角色可携带：延长1s“毁灭裂缝”持续时间）</p>
+                            <p>🎨 新机制“无尽讨伐（推荐队伍平均等级LV.3）”</p>
+                            <p>观测等级达到25级开启。初始组建至多2人队伍随机匹配各篇章BOSS，每击败3个非下篇BOSS或1个下篇BOSS可再选1人加入队伍，至少可以组建4人队。此外，每击败1个BOSS都有机会获得特殊增益（包括但不限于增加队伍人数上限、攻击力加成、生命恢复等等）。每30天结算一次，累计讨伐10/30/60个敌人可获得200/600/1200世界泡。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.1 版本 -->
+            <div class="card version-block" id="v2.1">
+                <div class="version-badge">2.1 版本 · 造化苦弱，逢世生念 <small>主推：元素反应</small></div>
+                
+                <!-- 第拾叁章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第拾叁章 · 倘若佛莲不渡苍生 <span style="font-size:0.9rem;">(上/中/下 · 各3小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>上篇BOSS：</strong>苦役僧</li>
+                            <li><strong>中篇BOSS：</strong>重型机甲-佛重Ⅳ号</li>
+                            <li><strong>下篇BOSS：</strong>情状开价-众佛零号</li>
+                            <li>💠 特殊掉落：经颂万世太平（LV2级突破素材）</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池36抽（每小节4抽），专属武器池30抽（每篇结尾BOSS关有低/中/难，每篇难度通过中及以上难度10抽），版本签到600世界泡（=10观测回想/拟定器钥）</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第拾肆章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第拾肆章 · 致莫里恺安·奈亚 <span style="font-size:0.9rem;">(上/中/下 · 各5小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>上篇BOSS：</strong>魔神职权之繁衍</li>
+                            <li><strong>中篇BOSS：</strong>魔神职权之行动</li>
+                            <li><strong>下篇BOSS：</strong>魔神职权之疗愈</li>
+                            <li>💠 特殊掉落：职权归能（LV2级突破素材）</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池36抽（每小节4抽），专属武器池30抽（每篇结尾BOSS关有低/中/难，每篇难度通过中及以上难度10抽），版本签到600世界泡（=10观测回想/拟定器钥），改名卡（最初的人专用，每月至多可改一次）</p>
+                            <p>🎨 “绘卷忆流年”</p>
+                            <p>📅 签到14天获得2.1版本S级纪念卡“银河履约”（星卜、猎武系列角色可携带：治疗量和受治疗量+1）<br>
+                            <small>※ 可N元补签第N次</small></p>
+                            <p>📅 累计签到30天获得2.1版本级纪念卡“大地守护”（艾蒙芽扎、盖亚系列角色可携带：生命值+1）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.2 版本 -->
+            <div class="card version-block" id="v2.2">
+                <div class="version-badge">2.2 版本 · 盛世天威祝业兴 <small>主推：元素反应</small></div>
+                
+                <!-- 第拾伍章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第拾伍章 · 天赋所讴歌的... <span style="font-size:0.9rem;">(上/中/下 · 各5小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>上篇BOSS：</strong>存护的坚韧盾甲</li>
+                            <li><strong>中篇BOSS：</strong>代号“守卫”-安德烈</li>
+                            <li><strong>下篇BOSS：</strong>第七十二根魔柱</li>
+                            <li>💠 特殊掉落：无关天赋的汗水（LV2级突破素材）</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池60抽（每小节4抽），专属武器池30抽（每篇结尾BOSS关有低/中/难，每篇难度通过中及以上难度10抽），版本签到1200世界泡（=10观测回想/拟定器钥），限时12天每天免费抽角色池和专属武器池各一次</p>
+                            <p>🎨 “绘卷忆流年”</p>
+                            <p>📅 版本连续签到14天获得2.2版本S级纪念卡“独角兽先王”（白马&王子、小矮人系列角色可携带：宠物伤害+1）<br>
+                            <small>※ 可N元补签第N次</small></p>
+                            <p>📅 累计签到30天获得2.2版本级纪念卡“岩浆泡浴”（姚子麟可携带：强化状态持续时间+1s）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.3 版本 -->
+            <div class="card version-block" id="v2.3">
+                <div class="version-badge">2.3 版本 · 霜冰已然消逝，蛮荒终将散尽 <small>主推：元素反应</small></div>
+                
+                <!-- 第拾陆章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第拾陆章 · 无主冰原纪 <span style="font-size:0.9rem;">(上/中/下 · 各3小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>上篇BOSS：</strong>狂化猛犸象</li>
+                            <li><strong>中篇BOSS：</strong>代号“企鹅”-邦邦</li>
+                            <li><strong>下篇BOSS：</strong>灾厄级-冰霜（毁灭12使者）</li>
+                            <li>💠 特殊掉落：易碎凝晶（LV2级突破素材）</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池36抽（每小节4抽），专属武器池30抽（每篇结尾BOSS关有低/中/难，每篇难度通过中及以上难度10抽），版本签到600世界泡（=10观测回想/拟定器钥）</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第拾柒章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第拾柒章 · 停滞古原纪 <span style="font-size:0.9rem;">(上/中/下 · 各3小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>上篇BOSS：</strong>森林古猿</li>
+                            <li><strong>中篇BOSS：</strong>颂诗人</li>
+                            <li><strong>下篇BOSS：</strong>自称“武者”之人（就是龍）</li>
+                            <li>💠 特殊掉落：真龙丹心（LV2级突破素材）</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池36抽（每小节4抽），专属武器池30抽（每篇结尾BOSS关有低/中/难，每篇难度通过中及以上难度10抽），版本签到600世界泡（=10观测回想/拟定器钥），改名卡（最初的人专用，每月至多可改一次）</p>
+                            <p>🎨 “绘卷忆流年”</p>
+                            <p>📅 连续签到14天获得2.3版本S级纪念卡“泡沫之下”（王池系列角色可携带：随从伤害+1）<br>
+                            <small>※ 可N元补签第N次</small></p>
+                            <p>📅 累计签到30天获得2.3版本级纪念卡“乘风逐浪”（夜枭系列角色可携带：暴击率+5%）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.4 版本 -->
+            <div class="card version-block" id="v2.4">
+                <div class="version-badge">2.4 版本 · 天空陨落的水晶之杯 <small>主推：元素反应</small></div>
+                
+                <!-- 第拾捌章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第拾捌章 · 歌颂自我，毁灭真我 <span style="font-size:0.9rem;">(上/中/下 · 各5小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>上篇BOSS：</strong>魅影歌剧</li>
+                            <li><strong>中篇BOSS：</strong>天狼星的噩梦-特辣般麻婆豆腐</li>
+                            <li><strong>下篇BOSS：</strong>终末镜像</li>
+                            <li>💠 特殊掉落：我是谁（WAI）（LV2级突破素材）</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池60抽（每小节4抽），专属武器池30抽（每篇结尾BOSS关有低/中/难，每篇难度通过中及以上难度10抽），版本签到1200世界泡（=10观测回想/拟定器钥），限时12天每天免费抽角色池和专属武器池各一次</p>
+                            <p>🎨 “绘卷忆流年”</p>
+                            <p>📅 版本连续签到14天获得2.4版本S级纪念卡“闲暇暖阳”（东皇初可携带：准心+0.5）<br>
+                            <small>※ 可N元补签第N次</small></p>
+                            <p>📅 累计签到30天获得2.4版本级纪念卡“重逢那个夏日”（海马回系列角色可携带：准心+0.5）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.5 版本 -->
+            <div class="card version-block" id="v2.5">
+                <div class="version-badge">2.5 版本 · 以和解的名义 <small>主推：元素反应</small></div>
+                
+                <!-- 第拾玖章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第拾玖章 · 时间终焉将近 <span style="font-size:0.9rem;">(上/中/下 · 各5小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>上篇BOSS：</strong>梦魇怪-沉默代价</li>
+                            <li><strong>中篇BOSS：</strong>时间之神的旧部</li>
+                            <li><strong>下篇BOSS：</strong>意识四使者之二——极乐and悲悯</li>
+                            <li>💠 特殊掉落：愿世间和解（LV2级突破素材）</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池60抽（每小节4抽），专属武器池30抽（每篇结尾BOSS关有低/中/难，每篇难度通过中及以上难度10抽），版本签到1200世界泡（=10观测回想/拟定器钥），限时12天每天免费抽角色池和专属武器池各一次</p>
+                            <p>🎨 新机制“绘卷忆流年”</p>
+                            <p>📅 版本连续签到14天获得2.5版本S级纪念卡“宴会舞曲”（德古拉斯·琳德可携带：攻击力+1）<br>
+                            <small>※ 可N元补签第N次</small></p>
+                            <p>📅 累计签到30天获得2.5版本级纪念卡“不惧时间洪流”（李征天系列角色可携带：暴击率+5%）</p>
+                            <p><small>※ 2.5版本过后，绘卷忆流年活动将不定时更新，已有非纪念卡将周期性UP</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.6 周年庆版本 -->
+            <div class="card version-block" id="v2.6">
+                <div class="version-badge">2.6 周年庆版本 · 钟声响起时，末日尽，蓦然回首处</div>
+                
+                <!-- 周年庆版本说明 -->
+                <div style="margin: 10px 0 15px 0; padding: 10px; background: rgba(255,215,0,0.1); border-left: 4px solid gold; border-radius: 4px;">
+                    <p style="margin:0; color: #ffd700;">🎉 周年庆特别福利：期间开启自选2.X版本角色的回溯限定抽取池，该保底独立计算，抽数继承到下次周年庆的自选UP池</p>
+                </div>
+                
+                <!-- 第贰拾章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第贰拾章 · 恭迎末世之人轻叩祂的门扉 <span style="font-size:0.9rem;">(上/中/下 · 各5小节)</span></div>
+                        
+                        <ul class="boss-list">
+                            <li><strong>BOSS·1：</strong>蚩尤</li>
+                            <li><strong>BOSS·2：</strong>审判者</li>
+                            <li><strong>BOSS·3：</strong>“一艘巨轮”</li>
+                        </ul>
+
+                        <div class="rewards">
+                            <p>📦 解锁角色池60抽（每小节4抽），专属武器池30抽（该版本每篇仅一个BOSS关，首次通过10抽），版本签到2400世界泡（=20观测回想/拟定器钥），限时12天每天免费抽角色池和专属武器池各一次</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第D章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第D章 · 沉浸在心智的温床 <span style="font-size:0.9rem;">(通关第C章，且观测级别≥35级开启)</span></div>
+                        
+                        <div class="rewards">
+                            <p>📦 解锁「本质观测者-自定义」(五星意识之心灵)、角色池10抽 · 专属武器池10抽、永久开启「观测特邀·自选UP观测者」：60世界泡一抽，80抽内必中所选UP</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第E章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第E章 · 享乐，就趁此时，就在此刻 <span style="font-size:0.9rem;">(通关第D章，且观测等级≥40级开启)</span></div>
+                        
+                        <div class="rewards">
+                            <p>📦 解锁角色池10抽 · 专属武器池10抽、预言家-柯斯（四星毁灭之右手）</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第F章 -->
+                <div class="chapter-grid">
+                    <div class="chapter-card">
+                        <div class="chapter-title">第F章 · 无需恐惧，让情绪乐团为你奏响哀歌 <span style="font-size:0.9rem;">(通关第E章，且观测等级≥40级开启)</span></div>
+                        
+                        <div class="rewards">
+                            <p>📦 解锁角色池10抽 · 专属武器池10抽</p>
+                            <p style="margin-top: 10px; font-weight: bold; color: #a88bff;">🎭 正式公布全新阵营 · 情绪乐团：</p>
+                            <ul style="margin-top: 5px; padding-left: 20px; color: #e0e0e0;">
+                                <li><strong>福斯·1.0</strong>（五星，小提琴家）</li>
+                                <li><strong>莫迪斯·2.4</strong>（五星，潜伏在锦缎系的卧底，主唱）</li>
+                                <li><strong>余施才·3.0</strong>（五星，副指挥）</li>
+                                <li><strong>乔尚·3.0</strong>（四星，架子鼓手）</li>
+                                <li><strong>卜·梅</strong>（女，指挥，3.0的BOSS）</li>
+                                <li><strong>克劳迪奥</strong>（男，五星首席演奏家，3.1BOSS，3.2实装）</li>
+                                <li><strong>御星煌·3.2</strong>（四星，笛手）</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 位面争霸赛 -->
+                <div style="margin-top: 20px; padding: 15px; background: rgba(100,100,255,0.1); border-radius: 8px; border: 1px solid #6464ff;">
+                    <div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; color: #8a8aff;">⚔️ 特殊机制讲解 · 位面争霸赛</div>
+                    <p><span class="world-currency">观测等级达到30级开启</span></p>
+                    <p>通过组建三人队伍（可联机），队伍需满足每期的要求：包括但不限于同一/不同阵营、同一/不同生命值上限、同一/不同名字笔画数等等，进行小游戏挑战获得积分。</p>
+                    <p>📅 每版本更新一次，每赛季积分可兑换的奖励以公告为准。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== JavaScript 核心功能 ==================== -->
+<script>
+(function() {
+    // ----- 1. 页面切换 -----
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const pages = document.querySelectorAll('.page');
+    
+    function switchPage(pageId) {
+        pages.forEach(p => p.classList.remove('active-page'));
+        const target = document.getElementById(pageId);
+        if (target) target.classList.add('active-page');
+        
+        navBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.page === pageId);
+        });
+    }
+    
+    navBtns.forEach(btn => {
+        btn.addEventListener('click', () => switchPage(btn.dataset.page));
+    });
+
+    // ----- 2. 队伍配置 -----
+    const slots = document.querySelectorAll('#teamSlots .team-slot');
+    const rosterTags = document.querySelectorAll('#rosterList .roster-tag');
+
+    function updateSlotUI(slot) {
+        const name = slot.dataset.name;
+        const btn = slot.querySelector('.remove-btn');
+        const nameDiv = slot.querySelector('.slot-char-name');
+        const campDiv = slot.querySelector('.slot-char-camp');
+        
+        if (name) {
+            nameDiv.textContent = name;
+            campDiv.textContent = slot.dataset.camp || '';
+            slot.classList.add('occupied');
+            btn.style.display = 'inline-block';
+        } else {
+            nameDiv.textContent = '— 空缺 —';
+            campDiv.textContent = '';
+            slot.classList.remove('occupied');
+            btn.style.display = 'none';
+        }
+    }
+
+    function isInTeam(name) {
+        return [...slots].some(s => s.dataset.name === name);
+    }
+
+    function getFirstEmptySlot() {
+        return [...slots].find(s => !s.dataset.name);
+    }
+
+    function updateRosterDisabled() {
+        rosterTags.forEach(tag => {
+            tag.classList.toggle('disabled', isInTeam(tag.dataset.name));
+        });
+    }
+
+    slots.forEach(slot => {
+        slot.dataset.name = '';
+        slot.dataset.camp = '';
+        updateSlotUI(slot);
+    });
+
+    rosterTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            if (tag.classList.contains('disabled')) return;
+            
+            const emptySlot = getFirstEmptySlot();
+            if (!emptySlot) {
+                alert('队伍已满，请先移除一名角色');
+                return;
+            }
+            
+            emptySlot.dataset.name = tag.dataset.name;
+            emptySlot.dataset.camp = tag.dataset.camp;
+            updateSlotUI(emptySlot);
+            updateRosterDisabled();
+        });
+    });
+
+    slots.forEach(slot => {
+        const btn = slot.querySelector('.remove-btn');
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            slot.dataset.name = '';
+            slot.dataset.camp = '';
+            updateSlotUI(slot);
+            updateRosterDisabled();
+        });
+    });
+
+    updateRosterDisabled();
+
+    // ----- 3. 抽卡模拟 (修复版) -----
+    // 所有五星角色列表
+    const allFiveStarChars = [
+        "神隐无踪-枪", "海渊凝视-莫奈",
+        "得道功德佛-空禅", "最初的【人】",
+        "锻铸神匠-文昊", "极影剑客-无锋",
+        "急冻寒庭-韩城书", "蛮族后裔-德凯",
+        "不休歌舞剧-莫迪斯", "命格权衡-天狼星",
+        "缄声默语-无音", "天籁共吟-正音",
+        "真魂圣主-龍", "预言终降临-柯斯", "重逢再回首-杰克"
+    ];
+
+    // 默认UP
+    let currentUP = "神隐无踪-枪";
+
+    // 从localStorage读取数据
+    function loadData() {
+        let data = localStorage.getItem('gacha_flip_cards_v2');
+        if (data) {
+            try {
+                return JSON.parse(data);
+            } catch (e) {}
+        }
+        return {
+            worldBubbles: 12000,
+            pullCount: 0,
+            pity: 0,
+            upCount: 0,
+            cards: [],
+            history: []
+        };
+    }
+
+    let state = loadData();
+
+    // 保存到localStorage
+    function saveData() {
+        localStorage.setItem('gacha_flip_cards_v2', JSON.stringify(state));
+    }
+
+    // 更新界面数字
+    function refreshUI() {
+        document.getElementById('worldDisplay').innerText = state.worldBubbles;
+        document.getElementById('worldInput').value = state.worldBubbles;
+        document.getElementById('pullCount').innerText = state.pullCount;
+        document.getElementById('pityCount').innerText = state.pity;
+        document.getElementById('upCount').innerText = state.upCount;
+    }
+
+    // 添加历史记录
+    function addHistory(text, isUp = false) {
+        state.history.unshift({ text, isUp, timestamp: Date.now() });
+        if (state.history.length > 15) state.history.pop();
+        renderHistory();
+    }
+
+    // 渲染历史面板
+    function renderHistory() {
+        const panel = document.getElementById('historyPanel');
+        if (state.history.length === 0) {
+            panel.innerHTML = '<div class="history-entry" style="color:#6f8bb0;">✨ 记录为空，开始你的观测 ✨</div>';
+            return;
+        }
+        let html = '';
+        state.history.forEach(entry => {
+            const cls = entry.isUp ? 'highlight' : '';
+            html += `<div class="history-entry ${cls}">${entry.text}</div>`;
+        });
+        panel.innerHTML = html;
+    }
+
+    // 抽卡核心 - 规则 (70抽前1.6%，之后每抽递增，80抽必出)
+    function pullOne() {
+        // 保底机制：80抽内必出五星
+        if (state.pity >= 79) {  // 第80抽必出
+            state.pity = 0;
+            state.upCount++;
+            state.pullCount++;
+            return { name: currentUP, isUp: true };
+        }
+        
+        // 计算当前抽数的出金概率
+        let probability = 0.016; // 基础概率1.6%
+        
+        if (state.pity >= 70) {
+            // 70抽后每抽提高概率，确保80抽时达到100%
+            const additionalProb = (state.pity - 69) * 0.0984; // (100% - 1.6%) / 10 ≈ 9.84% 每抽
+            probability = Math.min(0.016 + additionalProb, 1.0);
+        }
+        
+        // 根据计算出的概率判断是否出金
+        const rnd = Math.random();
+        if (rnd < probability) {  // 出五星 (必是UP)
+            state.pity = 0;
+            state.upCount++;
+            state.pullCount++;
+            return { name: currentUP, isUp: true };
+        } else {
+            state.pity++;
+            state.pullCount++;
+            // 三星/四星物品
+            const nonFiveNames = ["✨ 三星回忆 ✨", "✨ 四星碎片 ✨", "✨ 记忆尘埃 ✨"];
+            const randomName = nonFiveNames[Math.floor(Math.random() * nonFiveNames.length)];
+            return { name: randomName, isUp: false };
+        }
+    }
+
+    // 渲染卡牌网格
+    function renderCards() {
+        const container = document.getElementById('cardsContainer');
+        if (!container) return;
+
+        if (state.cards.length === 0) {
+            container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:2rem; color:#8ba3c2;">✨ 点击抽卡开始观测 ✨</div>';
+            return;
+        }
+
+        let html = '';
+        state.cards.forEach((card, index) => {
+            const flippedClass = card.flipped ? 'flipped' : '';
+            // 背面显示问号，正面显示角色名
+            const frontContent = '?';
+            const backContent = `
+                <div>${card.name}</div>
+                ${card.isUp ? '<div style="color:gold; font-size:0.8rem;">⭐ UP</div>' : ''}
+            `;
+            html += `
+                <div class="card-item ${flippedClass}" data-index="${index}">
+                    <div class="card-inner">
+                        <div class="card-front">${frontContent}</div>
+                        <div class="card-back">${backContent}</div>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+
+        // 为每个卡牌绑定点击事件
+        document.querySelectorAll('.card-item').forEach(cardDiv => {
+            cardDiv.addEventListener('click', function(e) {
+                const index = this.getAttribute('data-index');
+                if (index !== null && state.cards[index] && !state.cards[index].flipped) {
+                    // 翻开卡牌
+                    state.cards[index].flipped = true;
+                    const card = state.cards[index];
+                    addHistory(`翻开：${card.name} ${card.isUp ? '⭐' : ''}`, card.isUp);
+                    renderCards();
+                    saveData();
+                }
+            });
+        });
+    }
+
+    // 执行抽卡 (单抽或十连)
+    function doPull(mode) {
+        if (!currentUP) {
+            alert("请选择一个UP角色");
+            return;
+        }
+
+        const worldInput = document.getElementById('worldInput');
+        let worldBubbles = parseInt(worldInput.value);
+        if (isNaN(worldBubbles) || worldBubbles < 0) worldBubbles = 0;
+
+        const cost = mode === 'single' ? 120 : 1200;
+        if (worldBubbles < cost) {
+            alert(`世界泡不足！需要 ${cost} 世界泡。`);
+            return;
+        }
+
+        // 扣除世界泡
+        worldBubbles -= cost;
+        state.worldBubbles = worldBubbles;
+        worldInput.value = worldBubbles;
+
+        // 生成新卡牌
+        const newCards = [];
+        if (mode === 'single') {
+            const res = pullOne();
+            newCards.push({ name: res.name, isUp: res.isUp, flipped: false });
+            addHistory(`获得：${res.name} ${res.isUp ? '⭐' : ''}`, res.isUp);
+        } else {
+            for (let i = 0; i < 10; i++) {
+                const res = pullOne();
+                newCards.push({ name: res.name, isUp: res.isUp, flipped: false });
+            }
+            const upCount = newCards.filter(c => c.isUp).length;
+            addHistory(`十连获得 ${upCount} 位UP`, upCount > 0);
+        }
+
+        // 将新卡牌添加到现有卡牌后面
+        state.cards = [...state.cards, ...newCards];
+
+        refreshUI();
+        renderCards();
+        saveData();
+    }
+
+    // 一键翻开所有未翻开的卡牌
+    function flipAllCards() {
+        if (state.cards.length === 0) {
+            alert("没有可翻开的卡牌");
+            return;
+        }
+
+        let flippedCount = 0;
+        state.cards.forEach(card => {
+            if (!card.flipped) {
+                card.flipped = true;
+                flippedCount++;
+            }
+        });
+
+        if (flippedCount > 0) {
+            addHistory(`一键翻开 ${flippedCount} 张卡牌`, false);
+            renderCards();
+            saveData();
+        } else {
+            alert("所有卡牌已经翻开了");
+        }
+    }
+
+    // 重置所有数据
+    function resetAllData() {
+        if (confirm("重置将清空所有卡牌、记录和世界泡至初始值，确定吗？")) {
+            state = {
+                worldBubbles: 12000,
+                pullCount: 0,
+                pity: 0,
+                upCount: 0,
+                cards: [],
+                history: []
+            };
+            saveData();
+            refreshUI();
+            renderCards();
+            renderHistory();
+        }
+    }
+
+    // 监听UP单选按钮
+    const radioButtons = document.querySelectorAll('input[name="upChar"]');
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function(e) {
+            if (this.checked) {
+                currentUP = this.value;
+            }
+        });
+    });
+
+    // 默认选中第一个
+    window.addEventListener('load', function() {
+        const defaultRadio = document.querySelector('input[name="upChar"][value="神隐无踪-枪"]');
+        if (defaultRadio) {
+            defaultRadio.checked = true;
+            currentUP = "神隐无踪-枪";
+        }
+        refreshUI();
+        renderCards();
+        renderHistory();
+    });
+
+    // 绑定按钮
+    document.getElementById('singlePull')?.addEventListener('click', () => doPull('single'));
+    document.getElementById('tenPull')?.addEventListener('click', () => doPull('ten'));
+    document.getElementById('flipAllBtn')?.addEventListener('click', flipAllCards);
+    document.getElementById('resetGacha')?.addEventListener('click', resetAllData);
+})();
+</script>
+
+</body>
+</html>
+```
